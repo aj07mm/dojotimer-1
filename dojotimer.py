@@ -23,6 +23,8 @@ If you find any bugs or have any suggestions email: amieiro.flavio@gmail.com
 """
 from Tkinter import *
 import tkSimpleDialog
+import pyglet
+
 
 class Clock(object):
     """
@@ -59,6 +61,8 @@ class Clock(object):
             '%02d:%02d' % ((self.seconds /60), (self.seconds % 60))
         )
 
+        self.sound = pyglet.resource.media('alert.mp3', streaming=False)
+
     def __create_widgets(self):
         """ This function creates some widgets for the timer."""
         # self.labelstr is going to be used as text in the label
@@ -94,6 +98,9 @@ class Clock(object):
         self.quit_btn = Button(self.frame, text='Quit', command=self.frame.quit)
         self.quit_btn.pack(side=LEFT)
 
+    def play_sound(self):
+        self.sound.play()
+
     def start(self):
         """
         Start the clock
@@ -118,6 +125,8 @@ class Clock(object):
                 self.top.deiconify()
                 self.label['fg'] = '#d70505'
                 self.stop()
+                self.play_sound()
+                
             new_str = '%02d:%02d' % ((self.seconds / 60), (self.seconds % 60))
             self.labelstr.set(new_str)
             self.label.after(1000, self.update)
